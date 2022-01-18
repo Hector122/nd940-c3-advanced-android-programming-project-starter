@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ND940C3-Project</string>
+    <string name="app_name">LoadApp</string>
     <string name="app_description">Download files from Internet</string>
     <string name="action_settings">Settings</string>
 
@@ -11,4 +11,9 @@
     <string name="button_name">Click me</string>
     <string name="button_loading">We are loading </string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="download">Download</string>
+    
+    <string name="rb_glide_description">Glide - Image loading Library by BumTech</string>
+    <string name="rb_load_app_description">Current repository by Udacity</string>
+    <string name="rb_retrofit_description">Retrofit - Type-safe HTTP client for Android and Java by Square, Inc</string>
 </resources>
