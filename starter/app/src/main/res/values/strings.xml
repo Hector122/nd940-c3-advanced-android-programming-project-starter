@@ -10,8 +10,9 @@
 
     <string name="button_name">Click me</string>
     <string name="button_loading">We are loading </string>
+    <string name="button_download">Download</string>
     <string name="title_activity_detail">DetailActivity</string>
-    <string name="download">Download</string>
+
     
     <string name="rb_glide_description">Glide - Image loading Library by BumTech</string>
     <string name="rb_load_app_description">Current repository by Udacity</string>
