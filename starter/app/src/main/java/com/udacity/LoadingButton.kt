@@ -29,14 +29,19 @@ class LoadingButton @JvmOverloads constructor(context: Context,
     
     private var valueAnimator = ValueAnimator()
     
-    private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { property, old, new ->
+    var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { property, old, new ->
         when (new) {
             ButtonState.Clicked -> {
                 buttonState = ButtonState.Loading
-                // isClickable = false
             }
-            ButtonState.Loading -> startLoadingAnimation()
-            ButtonState.Completed -> stopLoadingAnimation()
+            ButtonState.Loading -> {
+                isClickable = false
+                startLoadingAnimation()
+            }
+            ButtonState.Completed -> {
+                isClickable = true
+                stopLoadingAnimation()
+            }
         }
     }
     
@@ -49,7 +54,7 @@ class LoadingButton @JvmOverloads constructor(context: Context,
     
     init {
         isClickable = true
-        buttonState = ButtonState.Completed
+        invalidate()
         
         context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
             buttonBackgroundColor = getColor(R.styleable.LoadingButton_backgroundColor, 0)
@@ -60,11 +65,10 @@ class LoadingButton @JvmOverloads constructor(context: Context,
     override fun performClick(): Boolean {
         super.performClick()
         
-        
         buttonState = if (buttonState == ButtonState.Loading) ButtonState.Completed
         else ButtonState.Clicked
         
-        invalidate() // invalidates the entire view, forcing a call to onDraw() to redraw the view
+        //invalidate() // invalidates the entire view, forcing a call to onDraw() to redraw the view
         return true
     }
     
@@ -113,15 +117,14 @@ class LoadingButton @JvmOverloads constructor(context: Context,
                 (widthSize / 4 * 3 + 30).toFloat(),
                 (heightSize / 2 + 30).toFloat(),
                 0f,
-                progressValue/ 2.70f,
+                progressValue / 2.70f,
                 true,
                 paint)
     }
     
     private fun startLoadingAnimation() {
         // animate progressbar
-        valueAnimator = ValueAnimator.ofFloat(0f, widthSize.toFloat())
-        valueAnimator
+        valueAnimator.setObjectValues(0f, widthSize.toFloat())
         valueAnimator.apply {
             duration = 2000
             repeatCount = ValueAnimator.INFINITE
