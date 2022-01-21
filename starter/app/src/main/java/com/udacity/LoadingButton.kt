@@ -21,13 +21,14 @@ class LoadingButton @JvmOverloads constructor(context: Context,
     private var widthSize = 0
     private var heightSize = 0
     
-    private var progressValue = 0f
-    
     //custom attributes
     private var buttonBackgroundColor = 0
     private var buttonTextColor = 0
     
+    private var progressValue = 0f
     private var valueAnimator = ValueAnimator()
+    
+    private var text = ""
     
     var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { property, old, new ->
         when (new) {
@@ -35,11 +36,9 @@ class LoadingButton @JvmOverloads constructor(context: Context,
                 buttonState = ButtonState.Loading
             }
             ButtonState.Loading -> {
-                isClickable = false
                 startLoadingAnimation()
             }
             ButtonState.Completed -> {
-                isClickable = true
                 stopLoadingAnimation()
             }
         }
@@ -53,8 +52,7 @@ class LoadingButton @JvmOverloads constructor(context: Context,
     }
     
     init {
-        isClickable = true
-        
+        buttonState = ButtonState.Completed
         
         context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
             buttonBackgroundColor = getColor(R.styleable.LoadingButton_backgroundColor, 0)
@@ -66,9 +64,6 @@ class LoadingButton @JvmOverloads constructor(context: Context,
         super.performClick()
         
         buttonState = ButtonState.Clicked
-        
-        
-        invalidate() // invalidates the entire view, forcing a call to onDraw() to redraw the view
         return true
     }
     
@@ -94,7 +89,7 @@ class LoadingButton @JvmOverloads constructor(context: Context,
     }
     
     private fun drawText(canvas: Canvas?) {
-        val text =
+        text =
             if (buttonState == ButtonState.Completed) resources.getString(R.string.button_download)
             else resources.getString(R.string.button_loading)
         
@@ -123,7 +118,7 @@ class LoadingButton @JvmOverloads constructor(context: Context,
     }
     
     private fun startLoadingAnimation() {
-        // animate progressbar
+        // animate progress rect and arc
         valueAnimator.setObjectValues(0f, widthSize.toFloat())
         valueAnimator.apply {
             duration = 2000

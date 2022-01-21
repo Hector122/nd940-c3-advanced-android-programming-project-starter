@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         //Register the BroadcastReceiver when the downloadManager complete
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
         
-        // radio group listeners
+        // radio group listener
         radio_group.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.radio_glide -> {
@@ -65,8 +65,7 @@ class MainActivity : AppCompatActivity() {
         custom_button.setOnClickListener {
             if (radio_group.checkedRadioButtonId == -1) {
                 custom_button.buttonState = ButtonState.Completed
-                Toast.makeText(this, getString(R.string.select_file), Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, getString(R.string.select_file), Toast.LENGTH_SHORT).show()
             } else {
                 notificationManager.cancelNotifications()
                 download()
@@ -86,22 +85,18 @@ class MainActivity : AppCompatActivity() {
             
             //get the cursor with the id to verify the request status
             // review from: https://camposha.info/android-examples/android-downloadmanager/#gsc.tab=0
-            val query = DownloadManager.Query()
-                .setFilterById(id!!)
+            val query = DownloadManager.Query().setFilterById(id!!)
             val cursor = downloadManager.query(query)
             cursor.moveToFirst()
             
             when (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))) {
-                DownloadManager.STATUS_SUCCESSFUL -> {
-                    downloadFile.status = getString(R.string.success)
-                }
-                
-                DownloadManager.STATUS_FAILED -> {
-                    downloadFile.status = getString(R.string.fail)
-                }
+                DownloadManager.STATUS_SUCCESSFUL -> downloadFile.status = getString(R.string.success)
+                DownloadManager.STATUS_FAILED -> downloadFile.status = getString(R.string.fail)
             }
             
+            // Set button to completed state to stop the animation
             custom_button.buttonState = ButtonState.Completed
+            
             // send notification
             notificationManager.sendNotification(applicationContext, downloadFile)
         }
@@ -134,7 +129,6 @@ class MainActivity : AppCompatActivity() {
         private const val NOTIFICATION_ID = 0
     }
     
-    
     private fun createChannel(id: String, name: String) {
         //Channels are available from api level 26.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -156,7 +150,7 @@ class MainActivity : AppCompatActivity() {
     
     //Set a extension func
     fun NotificationManager.sendNotification(context: Context, downloadFile: DownloadFile) {
-        //Create a pending intent with the activity to be launch
+        // Init pending intent with the activity to be launch
         val intent = Intent(applicationContext, DetailActivity::class.java)
         intent.putExtra(DetailActivity.DOWNLOAD_FILE, downloadFile)
         intent.putExtra(DetailActivity.NOTIFICATION_NAME, NOTIFICATION_ID)
