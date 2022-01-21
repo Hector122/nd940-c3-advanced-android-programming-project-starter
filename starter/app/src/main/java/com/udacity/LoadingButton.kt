@@ -54,7 +54,7 @@ class LoadingButton @JvmOverloads constructor(context: Context,
     
     init {
         isClickable = true
-        invalidate()
+        
         
         context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
             buttonBackgroundColor = getColor(R.styleable.LoadingButton_backgroundColor, 0)
@@ -65,10 +65,10 @@ class LoadingButton @JvmOverloads constructor(context: Context,
     override fun performClick(): Boolean {
         super.performClick()
         
-        buttonState = if (buttonState == ButtonState.Loading) ButtonState.Completed
-        else ButtonState.Clicked
+        buttonState = ButtonState.Clicked
         
-        //invalidate() // invalidates the entire view, forcing a call to onDraw() to redraw the view
+        
+        invalidate() // invalidates the entire view, forcing a call to onDraw() to redraw the view
         return true
     }
     
@@ -138,7 +138,6 @@ class LoadingButton @JvmOverloads constructor(context: Context,
     }
     
     private fun stopLoadingAnimation() {
-        //TODO: stop animation
         valueAnimator.repeatCount = 0
         valueAnimator.addUpdateListener {
             valueAnimator.doOnEnd {
@@ -146,6 +145,5 @@ class LoadingButton @JvmOverloads constructor(context: Context,
                 invalidate()
             }
         }
-        //isClickable = true
     }
 }

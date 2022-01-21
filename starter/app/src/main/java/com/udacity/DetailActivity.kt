@@ -1,5 +1,6 @@
 package com.udacity
 
+import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +8,13 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.content_detail.*
 
+
 class DetailActivity : AppCompatActivity() {
+    
+    companion object {
+        const val NOTIFICATION_NAME = "CheckStatusButton"
+        const val DOWNLOAD_FILE = "downloadFile"
+    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,10 +22,12 @@ class DetailActivity : AppCompatActivity() {
         
         setSupportActionBar(toolbar)
         
-        val downloadFile = intent.getParcelableExtra<DownloadFile>(MainActivity.DOWNLOAD_FILE)
+        val downloadFile = intent.getParcelableExtra<DownloadFile>(DOWNLOAD_FILE)
         
-        text_file_name.text = downloadFile?.name
-        text_file_name.setTextColor(getColor(R.color.colorPrimaryDark))
+        cancelNotificationAction(intent.getIntExtra(NOTIFICATION_NAME, 2))
+        
+        text_name.text = downloadFile?.name
+        text_name.setTextColor(getColor(R.color.colorPrimaryDark))
         
         text_status.text = downloadFile?.status
         text_status.setTextColor(getColor(downloadFile!!.status))
@@ -33,4 +42,14 @@ class DetailActivity : AppCompatActivity() {
     
     private fun getColor(status: String) = ContextCompat.getColor(this,
             if (status == getString(R.string.success)) R.color.colorPrimaryDark else R.color.colorRed)
+    
+    private fun cancelNotificationAction(id: Int) {
+        // int notification manager
+        val notificationManager = ContextCompat.getSystemService(applicationContext,
+                NotificationManager::class.java) as NotificationManager
+        
+        notificationManager.cancel(id)
+    }
+    
+    
 }

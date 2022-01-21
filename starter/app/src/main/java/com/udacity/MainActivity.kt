@@ -132,7 +132,6 @@ class MainActivity : AppCompatActivity() {
             "https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter"
         
         private const val NOTIFICATION_ID = 0
-        const val DOWNLOAD_FILE = "downloadFile"
     }
     
     
@@ -159,7 +158,8 @@ class MainActivity : AppCompatActivity() {
     fun NotificationManager.sendNotification(context: Context, downloadFile: DownloadFile) {
         //Create a pending intent with the activity to be launch
         val intent = Intent(applicationContext, DetailActivity::class.java)
-        intent.putExtra(DOWNLOAD_FILE, downloadFile)
+        intent.putExtra(DetailActivity.DOWNLOAD_FILE, downloadFile)
+        intent.putExtra(DetailActivity.NOTIFICATION_NAME, NOTIFICATION_ID)
         
         pendingIntent = PendingIntent.getActivity(applicationContext,
                 NOTIFICATION_ID,
