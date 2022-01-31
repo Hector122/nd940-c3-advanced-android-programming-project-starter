@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                 custom_button.buttonState = ButtonState.Completed
                 Toast.makeText(this, getString(R.string.select_file), Toast.LENGTH_SHORT).show()
             } else {
+                custom_button.buttonState = ButtonState.Loading
                 notificationManager.cancelNotifications()
                 download()
             }
